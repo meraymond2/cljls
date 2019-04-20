@@ -14,7 +14,7 @@
 (def defaults
   {:ignore          #""
    :listing         :one-per-line                           ;; change to :columns
-   :path            "/home/michael"
+   :path            "."
    :show            :all                                    ;; change to :non-hidden
    :readable-sizes? false})
 

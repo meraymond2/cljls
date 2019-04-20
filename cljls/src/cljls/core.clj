@@ -1,7 +1,7 @@
 (ns cljls.core
   (:require [cljls.args :refer [parse-args]]
-            [cljls.colours :refer [colourised-file-name]]
-            [cljls.fs :refer [get-files]])
+            [cljls.fs :refer [get-files]]
+            [cljls.printing :refer [print-files]])
   (:gen-class))
 
 (defn no-file
@@ -14,7 +14,6 @@
   (let [options (parse-args args)
         files (get-files (:path options))]
     (if files
-      (doseq [file files]
-        (println (colourised-file-name file)))
+      (print-files files (:listing options))
 
       (no-file (:path options)))))

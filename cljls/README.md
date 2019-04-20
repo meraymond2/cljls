@@ -1,7 +1,7 @@
 To Do
 1. ~print out files in current dir, for now just one per line~
-2. use default sort, alphabetical, dirs first
-3. print with correct colours
+2. ~use default sort, alphabetical, dirs first~
+3. ~print with correct colours~ mostly done, except for obscure file types
 4. change default print to columns (figure out how to determine columns)
 5. implement arg parsing, only flags
 6. implement each option
@@ -30,7 +30,6 @@ Mainly, it should behave like a user would _expect_ the real one to.
 -1                         list one file per line.
 
 ## Colours
-Read and use colours from LS_COLORS. Other places too?
+Read and use colours from $LS_COLORS.
 
-## Short-comings
-The executable check only checks if the Java process has permission to execute it, not if anyone has permission. I think the only way to properly read all of those permissions would be to use JNI.
+The env string is separated by colons. It is a mixture of general rules, which are represented by two-letter codes, and file-extension specific colours. The syntax looks like general Unix wildcards, but it’s not possible to use arbitrary matches, only extensions. Thus you can do *.md, but not README.* — it will complain that the var is invalid.
