@@ -1,8 +1,11 @@
 (ns cljls.columns
   (:require [clojure.string :as string]))
 
-(def width
-  70)
+;; This is mostly working, it mainly just needs re-arranging.
+;; The valid-row? check needs to take padding into account, because
+;; a row’s actual length depends on every other row. So you can
+;; only check if a configuration is valid once you’ve padded them.
+
 
 ;; for now, just sorted alphabetically
 (def words
@@ -22,7 +25,8 @@
   "Not the final row-string, just checks if it is within the max-width.
   If all rows in a layout are valid, then the actual row can be constructed."
   [row width]
-  (< (count (str (string/join "  " row) " ")) width))
+  ;; TODO Broken! needs to take padding into account
+  (<= (count (str (string/join "  " row) " ")) width))
 
 (defn into-rows
   [list n]
@@ -33,14 +37,16 @@
                                     :value i}) list)))
 
 (defn calc-num-rows
-  "Yes, this is just a for loop with a break. Sue me."
+  "Yes, this is just a for-loop with a break. Sue me."
   [list terminal-width]
   (let [length (count list)]
-    (reduce (fn [_ idx]
-              (let [mat (into-rows list idx)]
-                (when (every? #(valid-row? % terminal-width) mat)
-                  (reduced idx))))
-            (range 1 length))))
+    (or (reduce (fn [_ idx]
+                  (let [mat (into-rows list idx)]
+                    (when (every? #(valid-row? % terminal-width) mat)
+                      (reduced idx))))
+                1
+                (range 1 length))
+        length)))
 
 (defn calc-col-widths
   "Find the long string in each column."
@@ -54,15 +60,14 @@
   [string length]
   (format (str "%-" length "s") string))
 
-(defn print-in-columns
+(defn into-printable-columns
   [list terminal-width]
   (let [n-rows (calc-num-rows list terminal-width)
         mat (into-rows list n-rows)
         col-widths (calc-col-widths mat)]
-    (doseq [row mat]
-      (let [zipped-with-width (map vector row col-widths)
-            padded (map (fn [[s width]] (pad s width)) zipped-with-width)
-            lines (str (string/join "  " padded) " ")]
-
-        (println lines))
-      )))
+    (->> mat
+         (map (fn [row] (->> row
+                             (map vector col-widths)
+                             (map (fn [[width cell]] (pad cell width))))))
+         (map (fn [row] (str (string/join "  " row) " ")))
+         (string/join "\n"))))
