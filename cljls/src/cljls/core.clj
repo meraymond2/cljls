@@ -11,9 +11,11 @@
 
 (defn -main
   [& args]
-  (let [options (parse-args args)
+  (let [start (System/currentTimeMillis)
+        options (parse-args args)
         files (get-files (:path options))]
     (if files
-      (print-files files (:listing options))
+      (print-files files options)
 
-      (no-file (:path options)))))
+      (no-file (:path options)))
+    (println "Elapsed time: " (- (System/currentTimeMillis) start))))

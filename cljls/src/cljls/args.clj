@@ -12,8 +12,9 @@
     :non-hidden})
 
 (def defaults
-  {:ignore          #""
-   :listing         :one-per-line                           ;; change to :columns
+  {:columns         (Integer. (or (System/getenv "COLUMNS") "80"))
+   :ignore          #""
+   :listing         :columns                                ;; change to :columns
    :path            "."
    :show            :all                                    ;; change to :non-hidden
    :readable-sizes? false})
