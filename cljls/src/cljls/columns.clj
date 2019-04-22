@@ -12,6 +12,8 @@
     (apply str string (repeat to-pad " "))))
 
 (defn into-mat
+  "First sorts the list into columns, so it can find the width, then
+  flips it into rows, for printing."
   [list n-rows]
   (let [columns (partition n-rows n-rows nil list)
         padded (vec (map (fn [col]
@@ -48,7 +50,7 @@
                 (range 1 length))
         length)))
 
-(defn into-printable-columns
+(defn into-printable-matrix
   [list max-width]
   (let [n-rows (calc-num-rows list max-width)
         mat (into-mat list n-rows)]

@@ -1,27 +1,30 @@
 (ns cljls.printing
   (:require [cljls.colours :refer [colourised-file-name]]
-            [cljls.columns :refer [into-printable-columns]]))
+            [cljls.columns :refer [into-printable-matrix]]
+            [clojure.string :as string]))
 
 (defn- one-per-line
   [files]
   (doseq [file files]
-    (println (colourised-file-name file))))
+    (println (:chromatic-name file))))
 
 (defn- columns
   [files width]
-  (let [file-names (map colourised-file-name files)]
-    (doseq [row (into-printable-columns file-names width)]
-      (println row))))
+  (doseq [row (into-printable-matrix (map :chromatic-name files) width)]
+    (println row)))
 
 (defn- comma-separated
   [files]
-  (println "to do"))
+  (->> files
+       (map :chromatic-name)
+       (string/join ", ")
+       (println)))
 
 (defn print-files
   [files options]
   (case (:listing options)
     :columns
-    (columns files (:columns options))
+    (columns files (:terminal-width options))
 
     :comma-separated
     (comma-separated files)

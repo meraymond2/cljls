@@ -12,12 +12,12 @@
     :non-hidden})
 
 (def defaults
-  {:columns         (Integer. (or (System/getenv "COLUMNS") "80"))
-   :ignore          #""
-   :listing         :columns                                ;; change to :columns
+  {:ignore          #""
+   :listing         :comma-separated
    :path            "."
    :show            :all                                    ;; change to :non-hidden
-   :readable-sizes? false})
+   :readable-sizes? false
+   :terminal-width  (Integer. (or (System/getenv "COLUMNS") "80"))})
 
 (defn parse-args
   [args]

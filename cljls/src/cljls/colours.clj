@@ -1,15 +1,14 @@
 (ns cljls.colours
-  (:require [cljls.fs :as fs]
-            [clojure.string :as string])
-  (:import (java.io File)))
+  (:require [clojure.string :as string]))
 
-
-(defn- colourise
+(defn- chromaticise
   "Wrap a string in colour codes."
   [string codes]
-  (str "\033[" (or codes "0") "m"
-       string
-       "\033[0m"))
+  (if codes
+    (str "\033[" codes "m"
+         string
+         "\033[0m")
+    string))
 
 (defn- system-colors
   []
@@ -29,8 +28,7 @@
   (parse-colours (system-colors)))
 
 (defn colourised-file-name
-  [^File file]
-  (let [extension (fs/get-extension file)]
-    (->> (or (get colour-options extension)
-             (get colour-options (fs/get-file-type file)))
-         (colourise (.getName file)))))
+  [name extension type]
+  (->> (or (get colour-options extension)
+           (get colour-options type))
+       (chromaticise name)))
