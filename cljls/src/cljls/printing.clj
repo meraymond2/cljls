@@ -10,8 +10,9 @@
 
 (defn- columns
   [files width]
-  (doseq [row (into-printable-matrix (map :chromatic-name files) width)]
-    (println row)))
+  (let [mat (into-printable-matrix (map :chromatic-name files) width)]
+    (doseq [row mat]
+      (println row))))
 
 (defn- comma-separated
   [files]

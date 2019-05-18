@@ -9,13 +9,19 @@
   (println (str path " does not exist."))
   (System/exit 2))
 
+(defn reject-bad-flag
+  [flag]
+  (println (str "ls: invalid option -- '" (name flag) "'"))
+  ;(System/exit 2)
+  )
+
 (defn -main
   [& args]
   (let [start (System/currentTimeMillis)
         options (parse-args args)
-        files (get-files (:path options))]
-    (if files
-      (print-files files options)
-
-      (no-file (:path options)))
+        bad-flag (:bad-flag options)]
+    (if bad-flag
+      (reject-bad-flag bad-flag)
+      (let [files (first (map get-files (:paths options)))] ;; first only for now
+        (print-files files options)))
     (println "Elapsed time: " (- (System/currentTimeMillis) start))))

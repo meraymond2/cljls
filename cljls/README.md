@@ -1,12 +1,11 @@
 To Do
-1. ~print out files in current dir, for now just one per line~
-2. ~use default sort, alphabetical, dirs first~
-3. ~print with correct colours~ mostly done, except for obscure file types
+1. print out files in current dir, for now just one per line
+2. use default sort, alphabetical, dirs first
+3. print with correct colours
 4. change default print to columns (figure out how to determine columns)
 5. implement arg parsing, only flags
 6. implement each option
 7. check for path arg
-8. implement unix wild cards in path/ignore options
 
 # Requirements
 Mainly, it should behave like a user would _expect_ the real one to.
@@ -17,7 +16,6 @@ Mainly, it should behave like a user would _expect_ the real one to.
 -There are some further idiosyncrasies, but not enough to notice.
     -If you list specific files, they’re never labelled by dir, and if you do it in more than once place, they get mixed together.
     -If you list specific files in the current dir they don’t have paths, but if you specify the path at all, they will be fully-pathed.
-
 
 ## Supported Flags
 -a, --all                  do not ignore entries starting with .

@@ -82,11 +82,10 @@
 (defn- normalised-name
   "For sorting, ignore capitalisation and hidden file marker."
   [file-data]
-  (-> (:name file-data)
-      (string/lower-case)
-      ((fn [fn] (if (string/starts-with? fn ".")
-                  (subs fn 1)
-                  fn)))))
+  (let [lower-name (string/lower-case (:name file-data))]
+    (if (string/starts-with? lower-name ".")
+      (subs lower-name 1)
+      lower-name)))
 
 (defn- sort-files
   "Sort alphabetically, then put directories first."
